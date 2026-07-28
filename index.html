@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DriveTrack Academy Portal - DEMO</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  *{font-family:Inter,system-ui,sans-serif}
+  .specimen::after{
+    content:"SPECIMEN - DEMO ONLY - NOT AN OFFICIAL DOCUMENT";
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:22px; font-weight:800; letter-spacing:0.15em; color:rgba(37,99,235,0.08);
+    transform:rotate(-18deg); pointer-events:none; text-align:center; line-height:1.2;
+  }
+</style>
+</head>
+<body class="min-h-screen bg-[#f8fafc] text-slate-900 antialiased">
+<!-- Disclaimer -->
+<div class="w-full bg-slate-900 text-white text-[11px] tracking-wide py-2.5 px-4 text-center">⚠ DEMO CONCEPT — Portfolio Mockup — Not affiliated with the Department of Transport, Republic of South Africa</div>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="min-h-[calc(100vh-36px)] flex items-center justify-center p-4">
+  <div class="w-full max-w-[440px]">
+    <div class="flex items-center gap-3 mb-8">
+      <div class="w-10 h-10 rounded-xl bg-[#2563eb] flex items-center justify-center shadow-lg">🎓</div>
+      <div><div class="font-semibold text-[15px] leading-none">DriveTrack</div><div class="text-[11px] tracking-[0.14em] uppercase text-slate-500 font-medium mt-1">Academy Portal</div></div>
+    </div>
+    <div class="bg-white rounded-[24px] shadow-[0_24px_64px_-24px_rgba(15,23,42,0.18),0_0_0_1px_rgba(15,23,42,0.04)] p-8">
+      <h2 class="text-[22px] font-semibold tracking-tight">Welcome back</h2>
+      <p class="text-[13.5px] text-slate-500 mt-2 leading-relaxed">Sign in to your private academy workspace. This is a demo — no real authentication required.</p>
+      <div class="mt-6">
+        <label class="text-[12px] font-medium text-slate-600 mb-1.5 block">Work email</label>
+        <input id="emailInput" placeholder="you@drivetrack.demo" class="w-full h-[44px] rounded-xl border border-slate-200 bg-slate-50/60 px-3 text-[14px] outline-none focus:bg-white focus:border-[#2563eb] focus:ring-4 focus:ring-blue-50 transition-all" />
+        <button id="loginBtn" class="mt-4 w-full h-[44px] rounded-xl bg-slate-900 text-white text-[14px] font-medium hover:bg-black transition-colors flex items-center justify-center gap-2"><span id="loginText">Continue to workspace</span><span id="loginLoader" class="hidden">Signing in…</span></button>
+        <p class="text-[11px] text-slate-400 mt-3 text-center">Demo mode: any valid email works</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden min-h-[calc(100vh-36px)]">
+  <header class="h-[64px] bg-white border-b border-slate-100 flex items-center justify-between px-6 sticky top-0 z-10">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-[#2563eb] flex items-center justify-center text-white text-sm">🎓</div>
+      <div class="font-semibold text-[14px]">DriveTrack <span class="text-slate-400 font-normal">Academy</span></div>
+      <span class="hidden sm:inline-flex ml-3 text-[10px] tracking-widest uppercase bg-blue-50 text-blue-700 border border-blue-100 px-2 py-1 rounded-full">DEMO</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="text-right hidden sm:block"><div class="text-[12px] font-medium" id="userEmailDisplay">demo@drivetrack.demo</div><div class="text-[11px] text-slate-500">Instructor • Demo Account</div></div>
+      <button onclick="logout()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:bg-slate-200">⎋</button>
+    </div>
+  </header>
+
+  <div class="max-w-[1280px] mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-6">
+    <!-- Search Panel -->
+    <div class="bg-white rounded-[20px] border border-slate-100 shadow-sm p-5 h-fit lg:sticky lg:top-[88px]">
+      <h3 class="text-[13px] font-semibold tracking-wide uppercase text-slate-700">Learners</h3>
+      <div class="relative mt-4">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">⌕</span>
+        <input id="searchInput" placeholder="Search learner name…" class="w-full h-11 rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3 text-[14px] outline-none focus:bg-white focus:border-[#2563eb] focus:ring-4 focus:ring-blue-50" />
+      </div>
+      <div id="learnerList" class="mt-4 space-y-2"></div>
+      <div id="emptyState" class="hidden text-center py-8 text-[13px] text-slate-500">No learner found</div>
+    </div>
+
+    <!-- Certificate Panel -->
+    <div id="certificateArea" class="min-h-[500px]">
+      <div class="bg-white rounded-[20px] border border-slate-100 shadow-sm overflow-hidden">
+        <div class="px-7 sm:px-9 py-6 border-b border-slate-100 flex items-center justify-between">
+          <div>
+            <div class="inline-flex items-center gap-2 text-[11px] tracking-widest uppercase font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full">● Completed • Internal Record</div>
+            <h2 class="mt-3 text-[18px] font-semibold tracking-tight">Learner Completion Certificate — SAMPLE</h2>
+            <p class="text-[12.5px] text-slate-500 mt-1">This is a fictional internal training record for demonstration only.</p>
+          </div>
+        </div>
+
+        <div class="relative specimen p-7 sm:p-9">
+          <div class="grid sm:grid-cols-2 gap-8 relative z-10">
+            <div class="space-y-5">
+              <div><div class="text-[11px] uppercase tracking-wide text-slate-500 font-medium mb-1">Learner Name</div><div class="text-[16px] font-semibold flex items-center gap-2"><span id="certInitials" class="w-7 h-7 rounded-full bg-slate-900 text-white text-[11px] font-semibold flex items-center justify-center">TM</span><span id="certName">Thabo Mkhize</span></div></div>
+              <div><div class="text-[11px] uppercase tracking-wide text-slate-500 font-medium mb-1">Student ID</div><div class="inline-flex text-[13px] font-mono font-medium bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-full" id="certId">DT-2024-1842</div></div>
+              <div><div class="text-[11px] uppercase tracking-wide text-slate-500 font-medium mb-1">Course</div><div class="text-[13px] font-medium bg-blue-50 border border-blue-100 text-blue-700 inline-flex px-2.5 py-1 rounded-full" id="certCourse">Code B Licence Preparation</div></div>
+            </div>
+            <div class="space-y-5">
+              <div><div class="text-[11px] uppercase tracking-wide text-slate-500 font-medium mb-1">Completion Date</div><div class="text-[14px] font-medium" id="certDate">12 Nov 2024</div></div>
+              <div><div class="text-[11px] uppercase tracking-wide text-slate-500 font-medium mb-1">Instructor</div><div class="text-[14px] font-medium" id="certInstructor">Sarah Jenkins</div></div>
+              <div><div class="text-[11px] uppercase tracking-wide text-slate-500 font-medium mb-1">Status</div><div class="flex items-center gap-2"><span class="inline-flex px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[12px] font-medium">✔ Completed</span><span class="text-[11px] text-slate-500">100% • Internal record</span></div></div>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row sm:items-end justify-between gap-6 relative z-10">
+            <div class="flex gap-8">
+              <div><div class="h-px w-28 bg-slate-300 mb-2"></div><div class="text-[11px] uppercase tracking-wide text-slate-500 font-medium">Academy Lead</div><div class="text-[12px] font-medium text-slate-700 mt-0.5">Demo Signature</div></div>
+              <div><div class="h-px w-28 bg-slate-300 mb-2"></div><div class="text-[11px] uppercase tracking-wide text-slate-500 font-medium">Date Issued</div><div class="text-[12px] font-medium text-slate-700 mt-0.5" id="certDate2">12 Nov 2024</div></div>
+            </div>
+            <button onclick="showToast()" class="h-[42px] px-4 rounded-xl bg-slate-900 text-white text-[13px] font-medium flex items-center gap-2 hover:bg-black">⬇ Download Sample PDF (Demo)</button>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 border-t border-slate-100 px-7 sm:px-9 py-3.5 text-[11.5px] leading-[1.5] text-slate-500">
+          This is a fictional internal training record for demonstration purposes only. It is not an official licence, government document, or proof of legal driving qualification.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-[13px] font-medium px-4 py-3 rounded-full shadow-xl">Demo PDF generation disabled — this is a portfolio mockup only.</div>
+
+<script>
+const learners = [
+  {name:'Thabo Mkhize', id:'DT-2024-1842', course:'Code B Licence Preparation', date:'12 Nov 2024', instructor:'Sarah Jenkins', initials:'TM'},
+  {name:'Aisha Patel', id:'DT-2024-2931', course:'Code B Licence Preparation', date:'03 Dec 2024', instructor:'Mark Coetzee', initials:'AP'},
+  {name:'James van der Merwe', id:'DT-2024-3055', course:'Code B Licence Preparation', date:'28 Oct 2024', instructor:'Sarah Jenkins', initials:'JM'},
+  {name:'Naledi Khumalo', id:'DT-2024-4120', course:'Code B Licence Preparation', date:'15 Jan 2025', instructor:'David Molefe', initials:'NK'},
+  {name:'Daniel Botha', id:'DT-2024-5217', course:'Code B Licence Preparation', date:'05 Jan 2025', instructor:'Mark Coetzee', initials:'DB'},
+  {name:'Priya Pillay', id:'DT-2024-6348', course:'Code B Licence Preparation', date:'22 Nov 2024', instructor:'David Molefe', initials:'PP'},
+];
+let selected = learners[0];
+
+const loginScreen = document.getElementById('loginScreen');
+const dashboard = document.getElementById('dashboard');
+const emailInput = document.getElementById('emailInput');
+const loginBtn = document.getElementById('loginBtn');
+const loginText = document.getElementById('loginText');
+const loginLoader = document.getElementById('loginLoader');
+const searchInput = document.getElementById('searchInput');
+const learnerList = document.getElementById('learnerList');
+const emptyState = document.getElementById('emptyState');
+
+function renderList(filter=''){
+  learnerList.innerHTML='';
+  const filtered = learners.filter(l=> l.name.toLowerCase().includes(filter.toLowerCase()));
+  if(filtered.length===0){ emptyState.classList.remove('hidden'); return; }
+  emptyState.classList.add('hidden');
+  filtered.forEach(l=>{
+    const active = selected.name===l.name;
+    const div=document.createElement('button');
+    div.className=`w-full text-left p-3 rounded-xl border flex items-center justify-between transition-all ${active?'bg-slate-900 text-white border-slate-900 shadow-md':'bg-slate-50 hover:bg-white border-slate-200 hover:border-slate-300'}`;
+    div.innerHTML=`<div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full ${active?'bg-white/15 text-white':'bg-slate-900 text-white'} flex items-center justify-center text-[11px] font-semibold">${l.initials}</div><div><div class="text-[13.5px] font-medium leading-none">${l.name}</div><div class="text-[11px] ${active?'text-white/60':'text-slate-500'} mt-1">${l.id}</div></div></div><span class="${active?'text-white/50':'text-slate-300'}">›</span>`;
+    div.onclick=()=>{selected=l; renderList(searchInput.value); updateCert();};
+    learnerList.appendChild(div);
+  });
+}
+function updateCert(){
+  document.getElementById('certName').textContent=selected.name;
+  document.getElementById('certId').textContent=selected.id;
+  document.getElementById('certCourse').textContent=selected.course;
+  document.getElementById('certDate').textContent=selected.date;
+  document.getElementById('certDate2').textContent=selected.date;
+  document.getElementById('certInstructor').textContent=selected.instructor;
+  document.getElementById('certInitials').textContent=selected.initials;
+}
+function doLogin(){
+  const val=emailInput.value.trim();
+  if(!val.includes('@')){ emailInput.classList.add('border-red-400'); return; }
+  loginText.classList.add('hidden'); loginLoader.classList.remove('hidden'); loginBtn.disabled=true;
+  setTimeout(()=>{
+    document.getElementById('userEmailDisplay').textContent=val;
+    loginScreen.classList.add('hidden'); dashboard.classList.remove('hidden');
+    renderList(); updateCert();
+  },900);
+}
+loginBtn.onclick=doLogin;
+emailInput.addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+searchInput.addEventListener('input',e=>{ renderList(e.target.value); });
+function logout(){ dashboard.classList.add('hidden'); loginScreen.classList.remove('hidden'); loginText.classList.remove('hidden'); loginLoader.classList.add('hidden'); loginBtn.disabled=false; emailInput.value=''; }
+function showToast(){ const t=document.getElementById('toast'); t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'),3000); }
+renderList();
+</script>
+</body>
+</html>
